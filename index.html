@@ -3,9 +3,9 @@
 <head>
   <script type="module">
   // Importamos Firebase y Firestore (Base de datos)
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
+ // Importamos Firebase y Firestore (Base de datos con soporte Offline)
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { initializeFirestore, persistentLocalCache, collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
   // Tus credenciales de GADO
   const firebaseConfig = {
     apiKey: "AIzaSyDsraCZCJsj56FYOlvEuTdOrVfpmpeb6_E",
@@ -17,8 +17,11 @@
   };
 
   // Inicializamos Firebase y la Base de Datos (db)
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+// Inicializamos Firebase y activamos la memoria local automática para trabajar OFFLINE
+const app = initializeApp(firebaseConfig);
+const db = initializeFirestore(app, {
+  localCache: persistentLocalCache()
+});
 
   // Dejamos la base de datos disponible para el resto del sistema
   window.db = db;
